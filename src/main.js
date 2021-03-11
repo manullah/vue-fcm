@@ -30,6 +30,11 @@ navigator.serviceWorker
   });
 // fiebase configs end
 
+// Vue Toast
+import VueToast from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
+Vue.use(VueToast);
+
 new Vue({
   render: (h) => h(App),
 }).$mount("#app");

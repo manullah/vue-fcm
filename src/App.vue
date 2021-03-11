@@ -41,10 +41,21 @@ export default {
       try {
         firebase.messaging().onMessage((payload) => {
           console.log("payload ", payload);
+          this.showToast(payload);
         });
       } catch (e) {
         console.log(e);
       }
+    },
+    showToast(payload) {
+      this.$toast.open({
+        message: payload.notification.body,
+        position: "top-right",
+        type: "info",
+        onClick: () => {
+          window.location = payload.notification.click_action;
+        },
+      });
     },
   },
 };
