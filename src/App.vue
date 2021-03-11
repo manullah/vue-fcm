@@ -1,19 +1,53 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Vue FCM</h1>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import firebase from "firebase/app";
+import "firebase/messaging";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+
+  created() {
+    try {
+      firebase
+        .messaging()
+        .requestPermission()
+        .then(() => {
+          console.log("Notification permission granted");
+
+          firebase
+            .messaging()
+            .getToken()
+            .then((token) => {
+              window.console.log("token ", token);
+
+              this.receiveMessage();
+            });
+        })
+        .catch((err) => {
+          console.log("Unable to get token ", err);
+        });
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  methods: {
+    receiveMessage() {
+      try {
+        firebase.messaging().onMessage((payload) => {
+          console.log("payload ", payload);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+};
 </script>
 
 <style>
